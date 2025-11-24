@@ -39,7 +39,7 @@ class AuthViewModel @Inject constructor(
                     val authBody = response.body()
                     val token = authBody?.token ?: ""
 
-                    // Búsqueda del ID (igual que tenías)
+                    // Búsqueda del ID
                     val userId = authBody?.userId
                         ?: authBody?._id
                         ?: authBody?.user?.id
@@ -48,7 +48,7 @@ class AuthViewModel @Inject constructor(
                     Log.d(TAG, "Login OK. Token: ${token.take(10)}... ID Encontrado: '$userId'")
 
                     if (token.isNotEmpty() && userId.isNotEmpty()) {
-                        // 3. GUARDAR SESIÓN (Usando DataStore directo)
+                        // Guardar sesión
                         dataStoreManager.saveToken(token)
                         dataStoreManager.saveUserId(userId)
 

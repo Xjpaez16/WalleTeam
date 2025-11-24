@@ -26,7 +26,7 @@ class MemberViewModel @Inject constructor(
     val loading: StateFlow<Boolean> = _loading
 
     fun loadMembers(planId: String) {
-        // Token manejado automáticamente por el Interceptor
+
         viewModelScope.launch {
             Log.i("MEMBER_VM", "🔵 Cargando miembros para planId=$planId")
             _loading.value = true

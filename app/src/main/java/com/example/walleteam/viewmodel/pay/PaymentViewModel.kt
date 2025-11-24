@@ -29,7 +29,7 @@ class PaymentViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                // Llamada directa al repo
+
                 val resp = paymentRepository.getPaymentsByPlan(planId)
                 if (resp.isSuccessful) _payments.value = resp.body() ?: emptyList()
                 else _error.value = "Error ${resp.code()}"
