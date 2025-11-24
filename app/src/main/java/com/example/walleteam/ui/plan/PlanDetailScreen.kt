@@ -1,7 +1,8 @@
 package com.example.walleteam.ui.plan
-
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,16 +15,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.walleteam.ui.theme.PrimaryBlue
+import com.example.walleteam.ui.theme.PrimaryPurple
+import com.example.walleteam.ui.theme.TextSecondary
 import com.example.walleteam.viewmodel.plan.PlanDetailViewModel
 import com.example.walleteam.viewmodel.member.MemberViewModel
 import com.example.walleteam.ui.payment.RegisterPaymentContent
 import java.text.NumberFormat
 import java.util.Locale
+import com.example.walleteam.ui.plan.PlanMembersScreen
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,6 +108,36 @@ fun PlanDetailScreen(
                         Column(modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(plan!!.name, fontSize = 22.sp, fontWeight = FontWeight.Bold)
 
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            val clipboardManager = LocalClipboardManager.current
+                            val context = LocalContext.current
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable {
+                                        clipboardManager.setText(AnnotatedString(planId))
+                                        Toast.makeText(context, "ID del plan copiado", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .padding(8.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.ContentCopy,
+                                    contentDescription = "Copiar ID",
+                                    tint = TextSecondary,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "ID: $planId",
+                                    fontSize = 12.sp,
+                                    color = TextSecondary,
+                                    fontFamily = FontFamily.Monospace
+                                )
+                            }
+
                             Spacer(modifier = Modifier.height(24.dp))
 
                             Box(contentAlignment = Alignment.Center, modifier = Modifier.size(200.dp)) {
@@ -142,6 +183,7 @@ fun PlanDetailScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(0.dp)
                     ) {
+
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
